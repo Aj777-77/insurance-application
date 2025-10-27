@@ -34,9 +34,17 @@ COPY --chown=www-data:www-data . /var/www/html
 RUN composer install --no-dev --optimize-autoloader
 
 # Create storage directories and set permissions
-RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/testing storage/framework/views
-RUN chmod -R 755 storage bootstrap/cache
+RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/testing storage/framework/views storage/app/public
+RUN chmod -R 775 storage bootstrap/cache
 RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Laravel optimization commands
+RUN php artisan config:cache || true
+RUN php artisan route:cache || true
+RUN php artisan view:cache || true
+
+# Create symbolic link for storage
+RUN php artisan storage:link || true
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
@@ -57,8 +65,12 @@ EOF
 # Set the correct document root
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
+# Copy and make startup script executable
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Expose port 80
 EXPOSE 80
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Start with our custom entrypoint
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
