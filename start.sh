@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting Railway deployment..."
+echo "Starting deployment..."
 
 # Create required directories
 mkdir -p storage/app/public
@@ -11,30 +11,30 @@ mkdir -p storage/logs
 mkdir -p bootstrap/cache
 
 # Set permissions
-chmod -R 755 storage
-chmod -R 755 bootstrap/cache
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
 
 echo "Directories created and permissions set"
 
-# Check environment
-echo "APP_ENV: $APP_ENV"
-echo "DB_CONNECTION: $DB_CONNECTION"
-
-# Clear any cached config that might cause issues
-php artisan config:clear || echo "Config clear failed"
-php artisan cache:clear || echo "Cache clear failed" 
-php artisan view:clear || echo "View clear failed"
-
-# Create storage link
-php artisan storage:link || echo "Storage link failed"
-
-# Run migrations (only if database is available)
-if [ "$DB_CONNECTION" = "pgsql" ]; then
-    echo "Running database migrations..."
-    php artisan migrate --force || echo "Migration failed - continuing anyway"
+# Generate app key if not exists
+if [ -z "$APP_KEY" ]; then
+    echo "Generating APP_KEY..."
+    php artisan key:generate --force
 fi
 
-echo "Starting Laravel server on port ${PORT:-8000}"
+# Clear caches
+php artisan config:clear
+php artisan cache:clear
+php artisan view:clear
 
-# Start server
+# Create storage link
+php artisan storage:link || true
+
+# Run migrations
+echo "Running migrations..."
+php artisan migrate --force
+
+echo "Starting server on port ${PORT:-8000}..."
+
+# Start the server
 exec php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
