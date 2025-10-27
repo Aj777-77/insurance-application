@@ -1,0 +1,16 @@
+# Laravel Application - Laragon Configuration
+# Redirect all requests to public directory
+
+RewriteEngine On
+
+# Handle requests for the root directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^/insurance/?$
+RewriteRule ^(.*)$ /insurance/public/ [L,R=301]
+
+# Handle all other requests
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^/insurance/(.*)$
+RewriteRule ^(.*)$ /insurance/public/$1 [L,QSA]

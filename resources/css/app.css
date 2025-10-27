@@ -1,0 +1,126 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Custom Insurance Application Styles */
+@layer utilities {
+    .form-container-enhanced {
+        background: linear-gradient(to right, #004e5c, #009487) !important;
+        min-height: 100vh;
+        padding: 20px;
+    }
+    
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    }
+    
+    .form-field-focus {
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .form-field-focus:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-1px);
+    }
+    
+    .button-hover-effect {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .button-hover-effect:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .button-hover-effect::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .button-hover-effect:hover::before {
+        left: 100%;
+    }
+    
+    .section-divider {
+        background: linear-gradient(90deg, transparent, #009487, transparent);
+        height: 2px;
+        margin: 20px 0;
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .file-upload-enhanced {
+        background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+        border: 2px dashed #667eea;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .file-upload-enhanced:hover {
+        background: linear-gradient(135deg, #e8f2ff 0%, #d6e8ff 100%);
+        border-color: #4c63d2;
+        transform: scale(1.02);
+    }
+    
+    .signature-canvas {
+        border: 2px solid #667eea;
+        border-radius: 8px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        background: #fafbff;
+    }
+    
+    .success-animation {
+        animation: successPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes successPulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+    
+    .gradient-text {
+        background: linear-gradient(to right, #004e5c, #009487);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+}
