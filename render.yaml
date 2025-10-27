@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: insurance-application
+    env: php
+    buildCommand: "./render-build.sh"
+    startCommand: "php artisan serve --host=0.0.0.0 --port=$PORT"
+    plan: free
+    envVars:
+      - key: APP_NAME
+        value: Insurance Application
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_DRIVER
+        value: file
+      - key: LOG_CHANNEL
+        value: stack
+
+databases:
+  - name: insurance-db
+    plan: free
